@@ -1,0 +1,7 @@
+build
+Makefile
+.mxproject
+*.s
+*.ld
+bsp/nucleo_f3/Core
+bsp/nucleo_f3/Drivers

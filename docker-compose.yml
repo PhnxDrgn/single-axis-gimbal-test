@@ -1,0 +1,6 @@
+services:
+  cmake-on-stm32:
+    build: .
+    volumes:
+      - .:/home/project/
+    working_dir: /home/project
