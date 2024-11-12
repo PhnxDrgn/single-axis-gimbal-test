@@ -2,12 +2,14 @@
 #define APP
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <stdint.h>
 
-void app();
+    void APP_main();
+    void APP_mpuIntReqHandler();
 
 #ifdef __cplusplus
 }

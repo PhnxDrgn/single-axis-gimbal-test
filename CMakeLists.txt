@@ -5,8 +5,11 @@ cmake_minimum_required(VERSION 3.12)
 # set toolchin file
 set(CMAKE_TOOLCHAIN_FILE "../arm-none-eabi-gcc.cmake")
 
+# environment vars
+set(CUBE_PROG_EXE $ENV{CUBE_PROG_EXE}) 
+
 # set project name
-project(blink)
+project(where-is-up)
 
 # Set microcontroller information
 set(MCU_FAMILY STM32F3xx)
@@ -92,3 +95,9 @@ add_custom_command(TARGET ${EXECUTABLE}
         COMMAND arm-none-eabi-objcopy -O ihex ${EXECUTABLE} ${PROJECT_NAME}.hex # generate .hex file of executable
         COMMAND arm-none-eabi-objcopy -O binary ${EXECUTABLE} ${PROJECT_NAME}.bin # generate .bin file. Depending on setup, the start address can change. Default is 0x08000000
         COMMAND ${CMAKE_COMMAND} -E copy ${EXECUTABLE} debug.elf) # make a copy named debug so debug setup can be consistant 
+
+add_custom_target(
+    load_debug
+    COMMAND ${CUBE_PROG_EXE} -c port=SWD -d ${CMAKE_CURRENT_SOURCE_DIR}/build/debug.elf
+    COMMAND ${CUBE_PROG_EXE} -c port=SWD
+)
