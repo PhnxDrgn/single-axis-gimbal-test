@@ -82,10 +82,11 @@ target_compile_options(${EXECUTABLE} PRIVATE
 target_link_options(${EXECUTABLE} PRIVATE
     -T${MCU_LINKER_SCRIPT}
     ${CPU_PARAMETERS}
-    -specs=nano.specs
+    -specs=rdimon.specs
+    -lgcc
     -lc
     -lm
-    -lnosys
+    -lrdimon
     -Wl,-Map=${PROJECT_NAME}.map,--cref
     -Wl,--gc-sections)
 
