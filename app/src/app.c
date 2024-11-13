@@ -9,7 +9,20 @@ volatile bool mpuDataUpdated = false;
 
 void APP_main()
 {
-    MPU6050_init(&mpuData);
+    // init accelerometer/gyro
+    if (MPU6050_init(&mpuData) == MPU6050_ok)
+        serialPrint("MPU initialized successfully.\n");
+    else
+    {
+        serialPrint("MPU failed to initialize.\n");
+    }
+
+    // wait until mpu is calibrated
+    serialPrint("Waiting for MPU calibration... ");
+    while (!mpuData.calibration.calibrated)
+        ;
+    serialPrint("complete.\n");
+
     while (1)
     {
         if (mpuDataUpdated)
@@ -17,9 +30,9 @@ void APP_main()
             char buffer[256];
             memset(buffer, '\0', sizeof(buffer));
 
-            snprintf(buffer, sizeof(buffer), "gyroX: %7.02f\tgyroY: %7.02f\tgyroZ: %7.02f\n\r", mpuData.gyro.x, mpuData.gyro.y, mpuData.gyro.z);
+            snprintf(buffer, sizeof(buffer), "pitch: %7.02f\troll: %7.02f\tyaw: %7.02f\n\r", mpuData.pitch, mpuData.roll, mpuData.yaw);
 
-            serialPrint(buffer, strnlen(buffer, sizeof(buffer)));
+            serialPrint(buffer);
         }
     }
 }

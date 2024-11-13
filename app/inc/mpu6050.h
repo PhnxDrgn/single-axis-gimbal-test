@@ -7,8 +7,10 @@ extern "C"
 #endif
 
 #include "stdint.h"
+#include "stdbool.h"
 
 #define MPU6050_ADDR 0b1101000
+#define MPU6050_CAL_PTS 200
 
     typedef enum
     {
@@ -67,23 +69,29 @@ extern "C"
         float x;
         float y;
         float z;
-    } MPU6050_accel_t;
+    } MPU6050_axis_t;
 
     typedef struct
     {
-        float x;
-        float y;
-        float z;
-    } MPU6050_gyro_t;
+        bool calibrated;            // used to check if calibration is complete
+        uint8_t dataIndex;          // used to count how many data points were added
+        MPU6050_axis_t accelOffset; // offset value for accelerometer
+        MPU6050_axis_t gyroOffset;  // offset value for gyroscope
+    } MPU6050_cal_t;
 
     typedef struct
     {
-        MPU6050_accel_t accel;
-        MPU6050_gyro_t gyro;
+        float pitch;
+        float roll;
+        float yaw;
+        MPU6050_axis_t gyroAngle;
         uint32_t lastMillis;
+        MPU6050_cal_t calibration;
     } MPU6050_data_t;
 
     MPU6050_status_t MPU6050_init(MPU6050_data_t *data);
+    void MPU6050_init_cal(MPU6050_cal_t *cal);
+    void MPU6050_updateCalibration(MPU6050_cal_t *cal, MPU6050_axis_t accelData, MPU6050_axis_t gyroData);
     MPU6050_status_t MPU6050_getIntStatus(uint8_t *status);
     MPU6050_status_t MPU6050_getData(MPU6050_data_t *data);
 
