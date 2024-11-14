@@ -27,10 +27,11 @@ void APP_main()
     {
         if (mpuDataUpdated)
         {
-            char buffer[256];
+            char buffer[64];
             memset(buffer, '\0', sizeof(buffer));
 
-            snprintf(buffer, sizeof(buffer), "pitch: %7.02f\troll: %7.02f\tyaw: %7.02f\n\r", mpuData.pitch, mpuData.roll, mpuData.yaw);
+            // snprintf(buffer, sizeof(buffer), "pitch: %7.02f\troll: %7.02f\tyaw: %7.02f\n\r", mpuData.pitch, mpuData.roll, mpuData.yaw);
+            snprintf(buffer, sizeof(buffer), "pitch: %7.02f\n\r", mpuData.pitch);
 
             serialPrint(buffer);
         }

@@ -84,7 +84,6 @@ extern "C"
         float pitch;
         float roll;
         float yaw;
-        MPU6050_axis_t gyroAngle;
         uint32_t lastMillis;
         MPU6050_cal_t calibration;
     } MPU6050_data_t;

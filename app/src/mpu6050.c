@@ -11,7 +11,7 @@ MPU6050_status_t MPU6050_init(MPU6050_data_t *data)
     uint8_t accelConfig = MPU6050_st_accel_x | MPU6050_st_accel_y | MPU6050_st_accel_z;
     uint8_t intConfigSetting = MPU6050_int_cfg_latch_int_en;
     uint8_t intEnableSetting = MPU6050_int_data_rdy_en;
-    uint8_t sampleRateDivider = 128;
+    uint8_t sampleRateDivider = 8;
     uint8_t regData = 0;
 
     // sample rate divider setting
@@ -60,9 +60,6 @@ MPU6050_status_t MPU6050_init(MPU6050_data_t *data)
     data->pitch = 0.0;
     data->roll = 0.0;
     data->yaw = 0.0;
-    data->gyroAngle.x = 0.0;
-    data->gyroAngle.y = 0.0;
-    data->gyroAngle.z = 0.0;
     data->lastMillis = 0;
 
     // reset int status
@@ -128,15 +125,15 @@ MPU6050_status_t MPU6050_getData(MPU6050_data_t *data)
 
     if (I2C_rx(MPU6050_ADDR, MPU6050_reg_accel_xout_h, dataBurst, 6) != I2C_OK) // read 6 bytes for all 3 axis
         return MPU6050_err;
-    accelData.x = (float)((int32_t)(dataBurst[0] << 24 | dataBurst[1] << 16) >> 16) / 16384.0;
-    accelData.y = (float)((int32_t)(dataBurst[2] << 24 | dataBurst[3] << 16) >> 16) / 16384.0;
-    accelData.z = (float)((int32_t)(dataBurst[4] << 24 | dataBurst[5] << 16) >> 16) / 16384.0;
+    accelData.x = ((int16_t)(dataBurst[0] << 8 | dataBurst[1])) / 16384.0;
+    accelData.y = ((int16_t)(dataBurst[2] << 8 | dataBurst[3])) / 16384.0;
+    accelData.z = ((int16_t)(dataBurst[4] << 8 | dataBurst[5])) / 16384.0;
 
     if (I2C_rx(MPU6050_ADDR, MPU6050_reg_gyro_xout_h, dataBurst, 6) != I2C_OK) // read 6 bytes for all 3 axis
         return MPU6050_err;
-    gyroData.x = (float)((int32_t)(dataBurst[0] << 24 | dataBurst[1] << 16) >> 16) / 131.0; // in deg / sec
-    gyroData.y = (float)((int32_t)(dataBurst[2] << 24 | dataBurst[3] << 16) >> 16) / 131.0; // in deg / sec
-    gyroData.z = (float)((int32_t)(dataBurst[4] << 24 | dataBurst[5] << 16) >> 16) / 131.0; // in deg / sec
+    gyroData.x = ((int16_t)(dataBurst[0] << 8 | dataBurst[1])) / 131.0; // in deg / sec
+    gyroData.y = ((int16_t)(dataBurst[2] << 8 | dataBurst[3])) / 131.0; // in deg / sec
+    gyroData.z = ((int16_t)(dataBurst[4] << 8 | dataBurst[5])) / 131.0; // in deg / sec
 
     if (MPU6050_getIntStatus(&intStatus) != MPU6050_ok)
         return MPU6050_err;
