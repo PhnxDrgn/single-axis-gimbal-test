@@ -3,5 +3,10 @@ Makefile
 .mxproject
 *.s
 *.ld
-bsp/nucleo_f3/Core
-bsp/nucleo_f3/Drivers
+.vscode/settings.json
+bsp/*/Core/Inc/*
+bsp/*/Core/Src/*
+bsp/*/Drivers/*
+
+!bsp/*/Core/Inc/main.h
+!bsp/*/Core/Src/main.c
