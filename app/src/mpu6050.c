@@ -11,7 +11,7 @@ MPU6050_status_t MPU6050_init(MPU6050_data_t *data)
     uint8_t accelConfig = MPU6050_st_accel_x | MPU6050_st_accel_y | MPU6050_st_accel_z;
     uint8_t intConfigSetting = MPU6050_int_cfg_latch_int_en;
     uint8_t intEnableSetting = MPU6050_int_data_rdy_en;
-    uint8_t sampleRateDivider = 8;
+    uint8_t sampleRateDivider = 32;
     uint8_t regData = 0;
 
     // sample rate divider setting
