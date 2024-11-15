@@ -14,7 +14,7 @@ volatile bool mpuDataUpdated = false;
 float servoAngle = 0;
 volatile float pitchError = 0;
 
-float P = 0.15, I = 0.004, D = 1.0;
+float P = 0.05, I = 0.002, D = 0.3;
 volatile float error = 0.0;
 volatile float errorPrev = 0.0;
 volatile float errorSum = 0.0;
@@ -48,8 +48,11 @@ void APP_main()
             char buffer[64];
             memset(buffer, '\0', sizeof(buffer));
 
-            // snprintf(buffer, sizeof(buffer), "pitch: %7.02f\troll: %7.02f\tyaw: %7.02f\n\r", mpuData.pitch, mpuData.roll, mpuData.yaw);
-            snprintf(buffer, sizeof(buffer), "pitch: %7.02f\tservoAngleDelta: %7.02f\terrSum: %7.02f\n\r", mpuData.pitch, servoAngleDelta, errorSum);
+            // tuning prints
+            // snprintf(buffer, sizeof(buffer), "pitch: %7.02f\tservoAngleDelta: %7.02f\terrSum: %7.02f\n\r", mpuData.pitch, servoAngleDelta, errorSum);
+
+            // data logging prints
+            snprintf(buffer, sizeof(buffer), "%06ld,%7.02f\n\r", millis(), mpuData.pitch);
 
             serialPrint(buffer);
         }
